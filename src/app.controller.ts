@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    console.log('this =>', this); //this => AppController { appService: AppService {} }
     return this.appService.getHello();
   }
 }
