@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo
+    image: mongo:latest
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -11,6 +11,26 @@ services:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: "echo 'db.runCommand({ ping: 1 })' | mongo --quiet --eval 'db.runCommand({ ping: 1 })'"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  nestjs:
+    build:
+      context: .
+      dockerfile: Dockerfile # ระบุ Dockerfile ที่สร้างใน root directory
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      MONGO_URI: 'mongodb://root:example@mongo:27017/my-nest-starter-mongo-1?authSource=admin'
+    volumes:
+      - .:/app # เพื่อให้สามารถทำงานร่วมกับไฟล์ในโฟลเดอร์โปรเจคได้
 
 volumes:
   mongo-data:
