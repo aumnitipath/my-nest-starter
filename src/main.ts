@@ -15,6 +15,7 @@ async function bootstrap() {
         // ตัวเลือกนี้ทำให้สามารถกำหนดรูปแบบของ error response เมื่อการตรวจ validation ล้มเหลวได้
         const messages = errors.map((error) => ({
           field: error.property,
+          // แปลง Object ให้เป็น array เอาค่าแค่ value
           message: Object.values(error.constraints).join('. ') + '.',
         }));
         return new BadRequestException({ errors: messages });
