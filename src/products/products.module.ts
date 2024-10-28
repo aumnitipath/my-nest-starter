@@ -10,5 +10,8 @@ import { Product, ProductSchema } from './schemas/product.schema';
   ],
   controllers: [ProductsController],
   providers: [ProductsService],
+
+  //NOTE ต้อง exports ออกไปด้วยถ้าจะให้ ตัวอื่นเรียกใช้ได้
+  exports: [ProductsService],
 })
 export class ProductsModule {}
